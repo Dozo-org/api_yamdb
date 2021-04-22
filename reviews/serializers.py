@@ -4,11 +4,12 @@ from .models import Review, Comment
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    comment = serializers.SlugRelatedField(
-        queryset = Comment.objects.all(),
-        slug_field='review_id',
-        default=None
-    )
+    comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    # comments = serializers.SlugRelatedField(
+    #     queryset = Comment.objects.all(),
+    #     slug_field='title_id',
+    #     default=None
+    # )
 
     class Meta:
         fields = '__all__'
