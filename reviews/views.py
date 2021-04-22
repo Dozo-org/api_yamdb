@@ -3,6 +3,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.pagination import PageNumberPagination
 
 from . import serializers
 from .models import Review, Comment, User
@@ -11,7 +12,8 @@ from .models import Review, Comment, User
 class ReviewViewSet(ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = serializers.ReviewSerializer
-    #permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAuthenticatedOrReadOnly, )
+    pagination_class = PageNumberPagination
 
 
     def perform_create(self, serializer):
@@ -20,7 +22,7 @@ class ReviewViewSet(ModelViewSet):
 
 class CommentViewSet(ModelViewSet):
     serializer_class = serializers.CommentSerializer
-   # permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAuthenticatedOrReadOnly, )
   
 
     def perform_create(self, serializer):

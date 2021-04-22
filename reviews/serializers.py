@@ -4,9 +4,10 @@ from .models import Review, Comment
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(
-        slug_field='username',
-        read_only=True,
+    comment = serializers.SlugRelatedField(
+        queryset = Comment.objects.all(),
+        slug_field='review_id',
+        default=None
     )
 
     class Meta:
@@ -15,9 +16,8 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(
-        slug_field='username',
-        read_only=True,
+    review = serializers.PrimaryKeyRelatedField(
+        queryset = Comment.objects.all()
     )
 
     class Meta:

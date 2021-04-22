@@ -6,4 +6,7 @@ User = get_user_model()
 
 class Title(models.Model):
     name = models.TextField()
+    
+    def __str__(self):
+        return self.name
 
