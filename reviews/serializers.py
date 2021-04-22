@@ -1,10 +1,16 @@
 from rest_framework import serializers
 
-from .models import Review, Comment
+from .models import Review, Comment, User, Title
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        queryset=User.objects.all(),
+        default=serializers.CurrentUserDefault()
+    )
+    title = serializers.PrimaryKeyRelatedField(read_only=True)
+    # comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     # comments = serializers.SlugRelatedField(
     #     queryset = Comment.objects.all(),
     #     slug_field='title_id',
@@ -17,6 +23,12 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        queryset=User.objects.all(),
+        default=serializers.CurrentUserDefault()
+    )
+    # review = serializers.PrimaryKeyRelatedField(read_only=True)
     review = serializers.PrimaryKeyRelatedField(
         queryset = Comment.objects.all()
     )
