@@ -5,7 +5,7 @@ from rest_framework import permissions, viewsets
 from rest_framework.pagination import PageNumberPagination
 
 from .models import Category, Genre, Title
-from rewiews.models import Rewiew
+from reviews.models import Review
 from .permissions import IsSuperuserOrReadOnly
 from .serializers import GenreSerializer, TitleSerializer, CategorySerializer
 
@@ -22,7 +22,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         get_object_or_404(Title, id=self.kwargs.get('titles_id'))
         serializer.save(
-            rating=self.title.rewiew.aggregate(Avg('rewiew__score')))
+            rating=self.title.review.aggregate(Avg('review__score')))
 
 
 class GenreViewSet(viewsets.ModelViewSet):
