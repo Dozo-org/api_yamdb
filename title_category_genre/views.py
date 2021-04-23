@@ -4,7 +4,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, viewsets
 from rest_framework.pagination import PageNumberPagination
 
-from .models import Category, Genre, Title
+from .models import Category, Genre, Title, Rewiew
 from .permissions import IsSuperuserOrReadOnly
 from .serializers import GenreSerializer, TitleSerializer, CategorySerializer
 
