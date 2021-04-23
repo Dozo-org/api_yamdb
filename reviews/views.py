@@ -6,7 +6,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
 
 from . import serializers
-from .models import Review, Comment, User, Title
+from .models import Review, Comment, Title
 
 
 class ReviewViewSet(ModelViewSet):
@@ -15,8 +15,8 @@ class ReviewViewSet(ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly, )
     pagination_class = PageNumberPagination
 
-
     def perform_create(self, serializer):
+        # Rating for Model Title
         title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
         serializer.save(author=self.request.user, title=title)
     
@@ -33,12 +33,9 @@ class CommentViewSet(ModelViewSet):
   
 
     def perform_create(self, serializer):
-        comment = get_object_or_404(Comment, pk=self.kwargs.get('comment_id'))
-        serializer.save(author=self.request.user, comment=comment) # , review=review)
+        review = get_object_or_404(Review, pk=self.kwargs.get('review_id'))
+        serializer.save(author=self.request.user, review=review)
 
     def get_queryset(self):
         review = get_object_or_404(Review, pk=self.kwargs.get('review_id'))
         return review.comments.all()
-
-
-

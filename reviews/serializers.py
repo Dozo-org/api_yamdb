@@ -1,6 +1,9 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Review, Comment, User, Title
+from .models import Comment, Review
+
+User = get_user_model()
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -10,12 +13,6 @@ class ReviewSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault()
     )
     title = serializers.PrimaryKeyRelatedField(read_only=True)
-    # comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    # comments = serializers.SlugRelatedField(
-    #     queryset = Comment.objects.all(),
-    #     slug_field='title_id',
-    #     default=None
-    # )
 
     class Meta:
         fields = '__all__'
@@ -25,15 +22,11 @@ class ReviewSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         slug_field='username',
-        queryset=User.objects.all(),
+        queryset=Comment.objects.all(),
         default=serializers.CurrentUserDefault()
     )
-    # review = serializers.PrimaryKeyRelatedField(read_only=True)
-    review = serializers.PrimaryKeyRelatedField(
-        queryset = Comment.objects.all()
-    )
+    review = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         fields = '__all__'
         model = Comment
-
