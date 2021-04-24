@@ -18,6 +18,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_filter = ('pub_date', )
     search_fields = ('text', )
 
+
 @admin.register(Title)
 class TitleAdmin(admin.ModelAdmin):
     list_display = ('name', )

@@ -15,7 +15,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     title = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
-        fields = '__all__'
+        fields = '__all__' #['id', 'text', 'author', 'score', 'pub_date']
         model = Review
 
 
