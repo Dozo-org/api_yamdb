@@ -6,7 +6,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
 
 from . import serializers
-from .models import Review, Comment, Title
+from .models import Review, Comment
+from title_category_genre.models import Title
 
 
 class ReviewViewSet(ModelViewSet):

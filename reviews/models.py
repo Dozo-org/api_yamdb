@@ -4,18 +4,17 @@ from django.db import models
 from title_category_genre.models import Title
 
 
-
 class Review(models.Model):
     title = models.ForeignKey(
         Title,
         on_delete=models.CASCADE,
-        related_name='review',
+        related_name='review'
     )
     text = models.TextField()
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='review',
+        related_name='review'
     )
     score = models.IntegerField(
         default=5, 

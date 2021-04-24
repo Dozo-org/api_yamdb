@@ -12,6 +12,7 @@ router.register(r'genres', GenreViewSet, basename='genres')
 router.register(r'categories', CategoryViewSet, basename='categories')
 
 urlpatterns = [
+    path('', include('reviews.urls')),
     path('v1/', include(router.urls)),
     path('v1/token/', TokenObtainPairView.as_view(),
          name='token_obtain_pair'),

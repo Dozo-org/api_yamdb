@@ -20,6 +20,9 @@ class TitleViewSet(viewsets.ModelViewSet):
     filterset_fields = ['category', 'genre', 'name', 'year']
 
     # def perform_create(self, serializer):
+    #     serializer.save(author=self.request.user)
+
+    # def perform_create(self, serializer):
     #     get_object_or_404(Title, id=self.kwargs.get('titles_id'))
         # serializer.save(
         #     rating=self.title.review.aggregate(Avg('review__score')))
