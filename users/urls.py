@@ -1,8 +1,4 @@
 from django.urls import include, path
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 from rest_framework.routers import DefaultRouter
 from .views import AccessToken, CreateUser, UserViewSet
 
@@ -17,4 +13,8 @@ urlpatterns = [
          AccessToken.as_view(),
          name='token_obtain_pair'),
     path('v1/', include(router.urls)),
+    path('v1/users/me/',
+         UserMe.as_view(),
+         name='token_obtain_pair'),
 ]
+
