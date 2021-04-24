@@ -1,10 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
 from rest_framework import viewsets, filters, status, permissions
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken, Token
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
-from django.contrib.auth.hashers import check_password
 from .serializer import UserSerializer
 from .permission import IsAdmin
 
@@ -53,7 +53,6 @@ class AccessToken(APIView):
         if confirmation_code == user.confirmation_code:
             #token = RefreshToken.for_user(user)
             refresh = RefreshToken.for_user(user)
-
             return Response(
                 {
                     'refresh': str(refresh),
@@ -77,3 +76,18 @@ class UserViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['user__username', ]
 
+
+class UserViewMe(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        user = get_object_or_404(User, username=request.user)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+    
+    def patch(self, request):
+        user = get_object_or_404(User, username=request.user)
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
