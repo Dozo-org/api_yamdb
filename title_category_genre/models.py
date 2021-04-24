@@ -19,7 +19,6 @@ class Title(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,
                                  related_name='categories', blank=True,
                                  null=True)
-    #rating = models.FloatField()
     
     def __str__(self):
         return self.name
