@@ -71,6 +71,7 @@ instance/
 # Sphinx documentation
 docs/_build/
 
+
 # PyBuilder
 target/
 
@@ -119,6 +120,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
+redoc.yaml
 
 # mypy
 .mypy_cache/
