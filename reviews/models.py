@@ -1,13 +1,13 @@
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from title_category_genre.models import Title
 
-
-class Title(models.Model):
-    name = models.TextField()
+#class Title(models.Model):
+    #name = models.TextField()
     
-    def __str__(self):
-        return self.name
+    #def __str__(self):
+        #return self.name
 
 
 
