@@ -13,8 +13,7 @@ urlpatterns = [
          AccessToken.as_view(),
          name='token_obtain_pair'),
     path('v1/', include(router.urls)),
-    path('v1/users/me/',
-         UserMe.as_view(),
-         name='token_obtain_pair'),
+    #path('v1/users/me/',
+         #UserMe.as_view(),
+         #name='token_obtain_pair'),
 ]
-
