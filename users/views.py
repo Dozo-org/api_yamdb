@@ -11,6 +11,9 @@ from .serializer import CustomTokenObtainSerializer, UserSerializer
 
 from api_yamdb.settings import EMAIL_FROM, EMAIL_SUBJ, EMAIL_TEXT
 
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+
 
 User = get_user_model()
 
@@ -49,6 +52,42 @@ class CreateUser(APIView):
         )
 
 
+
+            #return {
+                #'refresh': str(refresh),
+                #'access': str(refresh.access_token),
+            #}
+            #return Response(
+                #{'token': f'{token}'},
+                #status=status.HTTP_200_OK
+            #)
+
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all().order_by('id')
+#     serializer_class = UserSerializer
+#     lookup_field = 'username'
+#     permission_classes = [IsAdmin]
+#     filter_backends = [filters.SearchFilter]
+#     search_fields = ['user__username', ]
+
+
+# class UserViewMe(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+
+#     def get(self, request):
+#         user = get_object_or_404(User, username=request.user)
+#         serializer = UserSerializer(user)
+#         return Response(serializer.data)
+    
+#     def patch(self, request):
+#         user = get_object_or_404(User, username=request.user)
+#         serializer = UserSerializer(user, data=request.data, partial=True)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
 class UserViewSet(viewsets.ModelViewSet):
     '''
     Получить список пользователей.
@@ -56,12 +95,12 @@ class UserViewSet(viewsets.ModelViewSet):
     Поле для поиска - username.
     Поле для фильтрации - username.
     '''
-    queryset = User.objects.all().order_by('id')
+    queryset = User.objects.all()
+    permission_classes = [IsAdminUser | IsAdmin]
     serializer_class = UserSerializer
     lookup_field = 'username'
-    permission_classes = [IsAdmin]
     filter_backends = [filters.SearchFilter]
-    search_fields = ['user__username', ]
+    search_fields = ['username', ]
 
 
 class UserViewMe(APIView):
