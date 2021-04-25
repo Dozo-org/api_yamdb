@@ -1,51 +1,40 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator, UniqueValidator
+from rest_framework.exceptions import ValidationError
+from rest_framework.generics import get_object_or_404
 
-from .models import Comment, Review
+from .models import Comment, Review, Title
 
 User = get_user_model()
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+    title = serializers.SlugRelatedField(slug_field='name', read_only=True,)
     author = serializers.SlugRelatedField(
+        default=serializers.CurrentUserDefault(),
         slug_field='username',
-        queryset=User.objects.all(),
-        default=serializers.CurrentUserDefault()
+        read_only=True
     )
-    title = serializers.PrimaryKeyRelatedField(read_only=True) #, validators=[UniqueValidator(queryset=Review.objects.all())])
+
+    def validate(self, data):
+        request = self.context['request']
+        title = get_object_or_404(Title, pk=self.context['view'].kwargs.get('title_id'))
+        if request.method == 'POST':
+            if Review.objects.filter(
+                    title=title,
+                    author=request.user
+            ).exists():
+                raise ValidationError('It is impossible to create a 2nd review.')
+        return data
 
     class Meta:
-        fields = '__all__'
         model = Review
-        # validators = [
-        #     UniqueTogetherValidator(
-        #         queryset=Review.objects.all(),
-        #         fields=['author', 'title'],
-        #         message='It is impossible to create a 2nd review.',
-        #     )
-        # ]
-    
-    # def validate(self, data):
-    #     if (
-    #         self.context['request'].method == 'POST'
-    #         and data['author'] == data['title']
-    #     ):
-    #         raise serializers.ValidationError(
-    #             'Err'
-    #         )
-    #     return data
-
-
+        fields = '__all__'
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(
-        slug_field='username',
-        queryset=Comment.objects.all(),
-        default=serializers.CurrentUserDefault()
-    )
-    review = serializers.PrimaryKeyRelatedField(read_only=True)
+    review = serializers.SlugRelatedField(slug_field='text', read_only=True)
+    author = serializers.SlugRelatedField(slug_field='username', read_only=True)
 
     class Meta:
         fields = '__all__'

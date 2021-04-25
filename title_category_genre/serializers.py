@@ -1,37 +1,48 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from django.db.models import Avg
-from reviews.models import Review
 
 from .models import Title, Genre, Category
 
 
 User = get_user_model()
 
-class TitleSerializer(serializers.ModelSerializer):
-    category = serializers.PrimaryKeyRelatedField(read_only=True)
-    genre = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    rating = serializers.SerializerMethodField()
 
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Title
-        fields = '__all__'
-    
-    def get_rating(self, obj):
-        average = Review.objects.all().aggregate(Avg('score')).get('score__avg')
-        if average is None:
-            return 0
-        return average
-
+        model = Category
+        exclude = ['id']
 
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = '__all__'
+        exclude = ['id']
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class TitleReadOnlySerializer(serializers.ModelSerializer):
+    genre = GenreSerializer(read_only=True, many=True)
+    category = CategorySerializer(read_only=True)
+#    rating = serializers.SerializerMethodField()
+    rating = serializers.IntegerField(read_only=True, required=False)
+
     class Meta:
-        model = Category
+        fields = "__all__"
+        model = Title
+    # def get_rating(self, obj):
+    #     average = Review.objects.all().aggregate(Avg('score')).get('score__avg')
+    #     if average is None:
+    #         return 0
+    #     return average
+
+
+class TitleWriteSerializer(serializers.ModelSerializer):
+    genre = serializers.SlugRelatedField(
+        queryset=Genre.objects.all(), slug_field='slug', many=True
+    )
+    category = serializers.SlugRelatedField(
+        queryset=Category.objects.all(), slug_field='slug'
+    )
+
+    class Meta:
         fields = '__all__'
+        model = Title
