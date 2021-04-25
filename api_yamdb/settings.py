@@ -23,7 +23,6 @@ INSTALLED_APPS = [
     'users',
     'reviews',
     'title_category_genre',
-    'import_export',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
