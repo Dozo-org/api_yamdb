@@ -1,13 +1,10 @@
-from rest_framework.generics import get_object_or_404
 from rest_framework import viewsets
-from .permissions import ReviewCommentPermission
-
-
+from rest_framework.generics import get_object_or_404
+from title_category_genre.models import Title
 
 from . import serializers
 from .models import Review
-from title_category_genre.models import Title
-
+from .permissions import ReviewCommentPermission
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
