@@ -1,11 +1,7 @@
-from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from title_category_genre.models import Title
-
-
 from users.models import CustomUser as User
-
 
 
 class Review(models.Model):
@@ -46,4 +42,3 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-pub_date']
-

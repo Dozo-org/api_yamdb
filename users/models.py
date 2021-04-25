@@ -10,7 +10,8 @@
 #     )
 #     username = models.CharField(max_length = 30, unique=True)
 #     email = models.EmailField(max_length = 254, unique=True)
-#     role = models.CharField(max_length=9, choices=ROLE_CHOICES, default='user')
+#     role = models.CharField(max_length=9, choices=ROLE_CHOICES,
+#                             default='user')
 #     first_name = models.CharField(max_length=30, blank=True)
 #     last_name = models.CharField(max_length=30, blank=True)
 #     bio = models.CharField(max_length=254, blank=True)
@@ -36,10 +37,9 @@ class CustomUser(AbstractUser):
             (MODERATOR, 'moderator'),
         ]
 
-    role = models.CharField(max_length=9, choices=UserRole.choices, default=UserRole.USER,)
+    role = models.CharField(max_length=9, choices=UserRole.choices,
+                            default=UserRole.USER,)
     confirmation_code = models.UUIDField(default=uuid.uuid4, editable=False,)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
-
-

@@ -1,13 +1,18 @@
 from django.db.models import Avg
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, permissions, viewsets
+from rest_framework import filters, mixins, permissions, viewsets
 from rest_framework.pagination import PageNumberPagination
-from users.permission import IsAdminOrReadOnly
 
 from .filters import TitleFilter
 from .models import Category, Genre, Title
+from .permissions import IsAdminOrReadOnly
 from .serializers import (CategorySerializer, GenreSerializer,
                           TitleReadOnlySerializer, TitleWriteSerializer)
+
+
+class CustomViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
+                    mixins.ListModelMixin, viewsets.GenericViewSet):
+    pass
 
 
 class TitleViewSet(viewsets.ModelViewSet):
@@ -15,7 +20,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.annotate(
         rating=Avg('reviews__score')).order_by('-id')
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly, IsSuperuserOrReadOnly]
+        permissions.IsAuthenticatedOrReadOnly, IsAdminOrReadOnly]
     pagination_class = PageNumberPagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = TitleFilter
@@ -26,21 +31,23 @@ class TitleViewSet(viewsets.ModelViewSet):
         return TitleReadOnlySerializer
 
 
-class GenreViewSet(viewsets.ModelViewSet):
+class GenreViewSet(CustomViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
-                          IsSuperuserOrReadOnly]
+                          IsAdminOrReadOnly]
     pagination_class = PageNumberPagination
+    lookup_field = 'slug'
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(CustomViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
-                          IsSuperuserOrReadOnly]
+                          IsAdminOrReadOnly]
     pagination_class = PageNumberPagination
+    lookup_field = 'slug'
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']

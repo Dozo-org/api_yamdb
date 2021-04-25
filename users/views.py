@@ -1,16 +1,15 @@
 from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
-from rest_framework import viewsets, filters, status #, permissions
-# from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.views import APIView
-from .serializer import UserSerializer
-from .permission import IsAdmin
-
+from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+# from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
+from .permission import IsAdmin
+from .serializer import UserSerializer
 
 User = get_user_model()
 
@@ -87,7 +86,7 @@ class AccessToken(APIView):
 #         user = get_object_or_404(User, username=request.user)
 #         serializer = UserSerializer(user)
 #         return Response(serializer.data)
-    
+   
 #     def patch(self, request):
 #         user = get_object_or_404(User, username=request.user)
 #         serializer = UserSerializer(user, data=request.data, partial=True)
@@ -105,7 +104,8 @@ class UserViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['username', ]
 
-    @action(methods=['patch', 'get'], detail=False, permission_classes=[IsAuthenticated], url_path='me', url_name='me')
+    @action(methods=['patch', 'get'], detail=False,
+            permission_classes=[IsAuthenticated], url_path='me', url_name='me')
     def me(self, request, *args, **kwargs):
         instance = self.request.user
         serializer = self.get_serializer(instance)

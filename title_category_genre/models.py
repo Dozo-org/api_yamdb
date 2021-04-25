@@ -2,8 +2,8 @@ from django.db import models
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=25)
-    slug = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
 
     class Meta:
         ordering = ['-id']
@@ -11,10 +11,10 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
-    
+
 class Category(models.Model):
-    name = models.CharField(max_length=25)
-    slug = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
 
     class Meta:
         ordering = ['-id']
@@ -31,9 +31,9 @@ class Title(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,
                                  related_name='categories', blank=True,
                                  null=True)
-    
+
     class Meta:
-        ordering = ['year']
+        ordering = ['-year']
 
     def __str__(self):
         return self.name
