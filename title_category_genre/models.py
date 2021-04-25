@@ -1,25 +1,24 @@
 from django.db import models
-from django.db.models import UniqueConstraint
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=200)
-    slug = models.SlugField()
+    name = models.CharField(max_length=25)
+    slug = models.CharField(max_length=50, unique=True)
 
     class Meta:
-        UniqueConstraint(fields=['slug'], name="unique_field")
+        ordering = ['-id']
 
     def __str__(self):
         return self.name
 
-
+    
 class Category(models.Model):
-    name = models.CharField(max_length=200)
-    slug = models.SlugField()
+    name = models.CharField(max_length=25)
+    slug = models.CharField(max_length=50, unique=True)
 
     class Meta:
-        UniqueConstraint(fields=['slug'], name="unique_field")  
-        
+        ordering = ['-id']
+
     def __str__(self):
         return self.name
 
@@ -32,7 +31,6 @@ class Title(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,
                                  related_name='categories', blank=True,
                                  null=True)
-    rating = models.FloatField()
     
     class Meta:
         ordering = ['year']

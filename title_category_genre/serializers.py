@@ -3,27 +3,36 @@ from rest_framework import serializers
 from .models import Title, Genre, Category
 
 
-class TitleSerializer(serializers.ModelSerializer):
-    genre = serializers.SlugRelatedField(
-        queryset=Genre.objects.all(),
-        slug_field='slug',
-        many=True)
-    category = serializers.SlugRelatedField(
-        queryset=Category.objects.all(),
-        slug_field='slug')
-    
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Title
-        fields = '__all__'
+        model = Category
+        exclude = ['id']
 
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = '__all__'
+        exclude = ['id']
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class TitleReadOnlySerializer(serializers.ModelSerializer):
+    genre = GenreSerializer(read_only=True, many=True)
+    category = CategorySerializer(read_only=True)
+    rating = serializers.FloatField(read_only=True, required=False)
+
     class Meta:
-        model = Category
         fields = '__all__'
+        model = Title
+    
+    
+class TitleWriteSerializer(serializers.ModelSerializer):
+    genre = serializers.SlugRelatedField(
+        queryset=Genre.objects.all(), slug_field='slug', many=True
+    )
+    category = serializers.SlugRelatedField(
+        queryset=Category.objects.all(), slug_field='slug'
+    )
+
+    class Meta:
+        fields = '__all__'
+        model = Title
