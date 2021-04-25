@@ -2,15 +2,15 @@ from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
 from rest_framework import filters, permissions, status, viewsets
-from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .permission import IsAdmin
-from .serializer import CustomTokenObtainSerializer, UserSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from api_yamdb.settings import EMAIL_FROM, EMAIL_SUBJ, EMAIL_TEXT
 
+from .permission import IsAdmin
+from .serializer import CustomTokenObtainSerializer, UserSerializer
 
 User = get_user_model()
 
@@ -74,7 +74,7 @@ class UserViewMe(APIView):
         user = get_object_or_404(User, username=request.user)
         serializer = UserSerializer(user)
         return Response(serializer.data)
-    
+
     def patch(self, request):
         user = get_object_or_404(User, username=request.user)
         serializer = UserSerializer(user, data=request.data, partial=True)
