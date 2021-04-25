@@ -131,7 +131,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated', 
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -140,7 +140,17 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=6),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-}
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
+EMAIL_FROM = 'api_yamdb@yamdb.com'
+
+EMAIL_SUBJ = 'Благодарим Вас за регистрацию на сервисе API YamDB'
+
+EMAIL_TEXT = ('Не отвечайте на это сообщение! Данный адрес электронной почты '
+             'был указан для регистрации на сервисе API YamDB. '
+             'Для получения token отправть POST запрос с параметрами email '
+             'и confirmation_code на адрес auth/token/. Ваш confirmation_code:'
+             ' "{confirmation_code}". Token будет содержаться в теле ответа.')
