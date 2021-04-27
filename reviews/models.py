@@ -30,7 +30,7 @@ class Review(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['title', 'author'],
-                name='Unique together relation between title and author',
+                name='Unique title-author pair',
             ),
         ]
         ordering = ['-pub_date', ]
