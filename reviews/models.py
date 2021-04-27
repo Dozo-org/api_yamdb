@@ -23,6 +23,12 @@ class Review(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['title', 'author'],
+                name='Unique together relation between title and author',
+            ),
+        ]
         ordering = ['-pub_date', ]
 
 
