@@ -4,6 +4,9 @@ from title_category_genre.models import Title
 from users.models import CustomUser as User
 
 
+REVIEW_SCORE_ERROR_MESSAGE = 'The score value have to be between 1 and 10.'
+
+
 class Review(models.Model):
     title = models.ForeignKey(
         Title,
@@ -18,7 +21,8 @@ class Review(models.Model):
     )
     score = models.IntegerField(
         default=5,
-        validators=[MinValueValidator(1), MaxValueValidator(10)]
+        validators=[MinValueValidator(1, message=REVIEW_SCORE_ERROR_MESSAGE),
+                    MaxValueValidator(10, message=REVIEW_SCORE_ERROR_MESSAGE)]
     )
     pub_date = models.DateTimeField(auto_now_add=True)
 
