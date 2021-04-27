@@ -1,3 +1,6 @@
+from datetime import datetime
+
+from django.core.validators import MaxValueValidator
 from django.db import models
 
 
@@ -25,7 +28,9 @@ class Category(models.Model):
 
 class Title(models.Model):
     name = models.CharField(max_length=200)
-    year = models.IntegerField()
+    year = models.IntegerField(
+        MaxValueValidator(datetime.now().year,
+                          message='Введен некорректный год'))
     description = models.TextField()
     genre = models.ManyToManyField(Genre, related_name='genres')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,
