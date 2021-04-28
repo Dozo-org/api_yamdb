@@ -1,11 +1,20 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework.validators import UniqueValidator
+
 
 User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(
+        validators=[UniqueValidator(
+            queryset=User.objects.all(),
+            message='Пользователь с таким username уже существует'
+        )]
+    )
+
     class Meta:
         fields = ('first_name', 'last_name', 'username',
                   'bio', 'email', 'role',)

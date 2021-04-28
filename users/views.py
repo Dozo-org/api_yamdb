@@ -2,9 +2,9 @@ from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
 from rest_framework import filters, generics, permissions, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from api_yamdb.settings import EMAIL_FROM, EMAIL_SUBJ, EMAIL_TEXT
@@ -63,20 +63,13 @@ class UserViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['user__username', ]
 
-
-class UserViewMe(APIView):
-    '''
-    Получить или отредактировать информацию о своем профиле.
-    '''
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get(self, request):
+    @action(detail=False, methods=['get', 'patch'],
+            permission_classes=[permissions.IsAuthenticated])
+    def me(self, request):
         user = get_object_or_404(User, username=request.user)
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
-
-    def patch(self, request):
-        user = get_object_or_404(User, username=request.user)
+        if request.method == 'GET':
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
