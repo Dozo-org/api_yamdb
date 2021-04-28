@@ -5,7 +5,7 @@ from rest_framework.pagination import PageNumberPagination
 
 from .filters import TitleFilter
 from .models import Category, Genre, Title
-from .permissions import IsAdminOrReadOnly
+from users.permission import IsAdminOrReadOnly
 from .serializers import (CategorySerializer, GenreSerializer,
                           TitleReadOnlySerializer, TitleWriteSerializer)
 
