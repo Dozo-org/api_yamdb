@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
-from rest_framework import filters, permissions, status, viewsets
+from rest_framework import filters, generics, permissions, status, viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -15,7 +15,7 @@ from .serializer import CustomTokenObtainSerializer, UserSerializer
 User = get_user_model()
 
 
-class CreateUser(APIView):
+class CreateUser(generics.CreateAPIView):
     '''
     Создать пользователя, получить код подтверждения на email.
 
