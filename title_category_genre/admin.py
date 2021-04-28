@@ -6,19 +6,19 @@ from .models import Category, Genre, Title
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("pk", "name", "slug")
     search_fields = ("name",)
-    list_filter = ("pk",)
+    list_filter = ("name",)
     empty_value_display = "-пусто-"
 
 
 class GenreAdmin(admin.ModelAdmin):
     list_display = ("pk", "name", "slug")
     search_fields = ("name",)
-    list_filter = ("pk",)
+    list_filter = ("name",)
     empty_value_display = "-пусто-"
 
 
 class TitleAdmin(admin.ModelAdmin):
-    list_display = ("pk", "name", "year", "description", "genre", "category")
+    list_display = ("pk", "name", "year", "description", "category")
     search_fields = ("name",)
     list_filter = ("year",)
     empty_value_display = "-пусто-"
