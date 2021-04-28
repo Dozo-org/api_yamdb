@@ -7,6 +7,7 @@ class UserRole(models.TextChoices):
     ADMIN = 'admin'
     MODERATOR = 'moderator'
 
+
 class CustomUser(AbstractUser):
     username = models.CharField(max_length=30, unique=True,
                                 verbose_name='Имя пользователя')

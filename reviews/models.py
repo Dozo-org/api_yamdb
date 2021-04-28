@@ -24,7 +24,8 @@ class Review(models.Model):
     score = models.IntegerField(
         default=5,
         validators=[
-            MinValueValidator(1, message='Оценка должна быть больше или равна 1'),
+            MinValueValidator(1,
+                              message='Оценка должна быть больше или равна 1'),
             MaxValueValidator(10, message='Оценка должна быть меньше 11'),
         ],
         verbose_name='Оценка от автора отзыва',

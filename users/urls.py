@@ -6,8 +6,8 @@ from .views import CreateUser, MyTokenObtainPairView, UserViewSet
 router = DefaultRouter()
 router.register('users', UserViewSet, basename='UserView')
 patterns_auth = [
-     path('email/', CreateUser.as_view(), name='user_creat'),
-     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('email/', CreateUser.as_view(), name='user_creat'),
+    path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
 ]
 
 urlpatterns = [
