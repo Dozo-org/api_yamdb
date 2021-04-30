@@ -1,23 +1,26 @@
 from django.contrib import admin
+from import_export.admin import ImportExportMixin
 
 from .models import Category, Genre, Title
 
 
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(ImportExportMixin, admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name", )}
     list_display = ("pk", "name", "slug")
     search_fields = ("name",)
     list_filter = ("name",)
     empty_value_display = "-пусто-"
 
 
-class GenreAdmin(admin.ModelAdmin):
+class GenreAdmin(ImportExportMixin, admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name", )}
     list_display = ("pk", "name", "slug")
     search_fields = ("name",)
     list_filter = ("name",)
     empty_value_display = "-пусто-"
 
 
-class TitleAdmin(admin.ModelAdmin):
+class TitleAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ("pk", "name", "year", "description", "category")
     search_fields = ("name",)
     list_filter = ("year",)

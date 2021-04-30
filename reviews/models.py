@@ -24,9 +24,12 @@ class Review(models.Model):
     score = models.IntegerField(
         default=5,
         validators=[
-            MinValueValidator(1,
-                              message='Оценка должна быть больше или равна 1'),
-            MaxValueValidator(10, message='Оценка должна быть меньше 11'),
+            MinValueValidator(
+                1, message='Оценка должна быть больше или равна 1'
+            ),
+            MaxValueValidator(
+                10, message='Оценка должна быть меньше 11'
+            ),
         ],
         verbose_name='Оценка от автора отзыва',
     )
@@ -45,6 +48,9 @@ class Review(models.Model):
         ordering = ['-pub_date', ]
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
+    
+    def __str__(self):
+        return self.title.name + ': ' + self.text[:7] + '...' + self.text[-3:]
 
 
 class Comment(models.Model):
@@ -73,3 +79,6 @@ class Comment(models.Model):
         ordering = ['-pub_date']
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return self.text[:7] + '...' + self.text[-3:]

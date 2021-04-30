@@ -1,5 +1,7 @@
 import os
 
+from datetime import timedelta
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -23,6 +25,7 @@ INSTALLED_APPS = [
     'users',
     'reviews',
     'title_category_genre',
+    'import_export',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -123,6 +126,11 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
+if DEBUG:
+    SIMPLE_JWT = {
+        'ACCESS_TOKEN_LIFETIME': timedelta(hours=6),
+        'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    }
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 
