@@ -30,12 +30,11 @@ class CreateUser(generics.CreateAPIView):
         confirmation_code = get_random_string(length=12)
         if username is None:
             username = email.split('@')[0]
-        user = User.objects.create(
+        User.objects.update_or_create(
             email=email,
             username=username,
-            confirmation_code=confirmation_code
+            defaults={'confirmation_code': confirmation_code}
         )
-        user.save()
         send_mail(
             EMAIL_SUBJ,
             EMAIL_TEXT.format(confirmation_code=confirmation_code),
