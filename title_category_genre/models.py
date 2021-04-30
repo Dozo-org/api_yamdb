@@ -33,11 +33,11 @@ class Category(models.Model):
 class Title(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название')
     year = models.IntegerField(
-        validators = [
+        validators=[
             MaxValueValidator(
                 datetime.now().year,
                 message='Введен некорректный год', ),
-            ]
+        ]
     )
     description = models.TextField(verbose_name='Описание')
     genre = models.ManyToManyField(Genre, related_name='genres',

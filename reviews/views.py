@@ -3,7 +3,7 @@ from rest_framework.generics import get_object_or_404
 from title_category_genre.models import Title
 
 from . import serializers
-from .models import Review, Comment # ---! 
+from .models import Review
 from .permissions import ReviewCommentPermission
 
 
