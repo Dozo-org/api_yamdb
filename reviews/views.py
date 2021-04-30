@@ -3,7 +3,7 @@ from rest_framework.generics import get_object_or_404
 from title_category_genre.models import Title
 
 from . import serializers
-from .models import Review
+from .models import Review, Comment # ---! 
 from .permissions import ReviewCommentPermission
 
 
@@ -26,7 +26,11 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [ReviewCommentPermission]
 
     def get_queryset(self):
-        review = get_object_or_404(Review, pk=self.kwargs.get('review_id'))
+        title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
+        review = get_object_or_404(
+            title.reviews.all(),
+            pk=self.kwargs.get('review_id'),
+        )
         return review.comments.all()
 
     def perform_create(self, serializer):
