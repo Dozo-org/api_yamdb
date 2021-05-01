@@ -26,9 +26,9 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [ReviewCommentPermission]
 
     def get_queryset(self):
-        title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
         review = get_object_or_404(
-            title.reviews.all(),
+            Review,
+            title=self.kwargs.get('title_id'),
             pk=self.kwargs.get('review_id'),
         )
         return review.comments.all()
